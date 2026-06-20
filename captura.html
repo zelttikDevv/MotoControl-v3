@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Venta - Sistema de Ventas de Motocicletas</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+    
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <span>🏍️</span>
+                    <span>MotoVentas</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="captura.html" class="nav-item active">
+                    <span class="nav-icon">➕</span>
+                    <span>Registrar Venta</span>
+                </a>
+                <a href="analisis.html" class="nav-item">
+                    <span class="nav-icon">📈</span>
+                    <span>Análisis Avanzado</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="page-header fade-in">
+                <h1 class="page-title">Registrar Venta</h1>
+                <p class="page-subtitle">Capture los datos de la nueva venta de motocicleta</p>
+            </header>
+
+            <div class="form-container fade-in">
+                <form id="formVenta" novalidate>
+                    <div class="form-section">
+                        <h2 class="form-section-title">Datos de la Motocicleta</h2>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="sku" class="form-label required">SKU</label>
+                                <input type="text" id="sku" name="sku" class="form-input" placeholder="Ej: MOTO-001" required minlength="3" maxlength="50">
+                                <span class="form-error">El SKU es obligatorio (mínimo 3 caracteres)</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="marca" class="form-label required">Marca</label>
+                                <select id="marca" name="marca" class="form-select" required>
+                                    <option value="">Seleccione una marca</option>
+                                </select>
+                                <span class="form-error">Seleccione una marca válida</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="modelo" class="form-label required">Modelo</label>
+                                <input type="text" id="modelo" name="modelo" class="form-input" placeholder="Ej: Pulsar NS200" required minlength="2" maxlength="100">
+                                <span class="form-error">El modelo es obligatorio (mínimo 2 caracteres)</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="cilindraje" class="form-label required">Cilindraje (cc)</label>
+                                <select id="cilindraje" name="cilindraje" class="form-select" required>
+                                    <option value="">Seleccione cilindraje</option>
+                                    <option value="110">110cc</option>
+                                    <option value="125">125cc</option>
+                                    <option value="150">150cc</option>
+                                    <option value="200">200cc</option>
+                                    <option value="250">250cc</option>
+                                    <option value="300">300cc</option>
+                                    <option value="otros">Otros</option>
+                                </select>
+                                <span class="form-error">Seleccione un cilindraje válido</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="precioConIVA" class="form-label required">Precio con IVA</label>
+                                <input type="number" id="precioConIVA" name="precioConIVA" class="form-input" placeholder="Ej: 45000.00" required min="0.01" step="0.01">
+                                <span class="form-error">El precio debe ser mayor a 0</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Precio sin IVA (calculado)</label>
+                                <input type="text" id="precioSinIVA" class="form-input" readonly placeholder="Se calcula automáticamente" style="background: var(--fondo-terciario); cursor: not-allowed;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2 class="form-section-title">Datos del Cliente</h2>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="cliente" class="form-label required">Nombre del Cliente</label>
+                                <input type="text" id="cliente" name="cliente" class="form-input" placeholder="Ej: Juan Pérez García" required minlength="3" maxlength="200">
+                                <span class="form-error">El nombre del cliente es obligatorio (mínimo 3 caracteres)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h2 class="form-section-title">Datos de la Venta</h2>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="fechaVenta" class="form-label required">Fecha de Venta</label>
+                                <input type="date" id="fechaVenta" name="fechaVenta" class="form-input" required>
+                                <span class="form-error">Seleccione una fecha válida</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section" style="margin-bottom: 0;">
+                        <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                            <button type="button" class="btn btn-secondary" id="btnLimpiar">🗑️ Limpiar</button>
+                            <button type="submit" class="btn btn-primary" id="btnGuardar">💾 Guardar Venta</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/captura.js"></script>
+</body>
+</html>
