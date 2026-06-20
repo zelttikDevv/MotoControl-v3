@@ -111,7 +111,7 @@ function mostrarEstadoVacio() {
             <p class="page-subtitle">Análisis detallado del comportamiento comercial</p>
         </header>
         <div class="empty-state fade-in">
-            <div class="empty-state-icon">📈</div>
+            <div class="empty-state-icon"></div>
             <p class="empty-state-text">No hay datos disponibles para analizar</p>
             <p style="margin-top: 1rem; color: var(--texto-terciario);">
                 Registre ventas para ver el análisis detallado
@@ -177,7 +177,9 @@ function exportarDatos() {
         SKU: v.SKU,
         Marca: v.Marca,
         Modelo: v.Modelo,
+        Factura: v.Factura,
         Cilindraje: v.Cilindraje,
+        Seguro: v.Seguro,
         PrecioConIVA: v.PrecioConIVA,
         PrecioSinIVA: v.PrecioSinIVA,
         Cliente: v.Cliente,
@@ -272,7 +274,7 @@ function crearTodasLasGraficas() {
     crearGraficaIngresosMarcaSinIVA();
     crearGraficaParticipacionCilindraje();
     crearGraficaTendenciaComercial();
-}function crearGraficaTopModelos() {
+            }function crearGraficaTopModelos() {
     const ctx = document.getElementById('chartTopModelos');
     if (!ctx) return;
 
@@ -301,18 +303,19 @@ function crearTodasLasGraficas() {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            indexAxis: 'y',
             plugins: {
                 legend: { display: false }
             },
             scales: {
                 x: {
+                    beginAtZero: true,
                     ticks: { color: '#9ca3af' },
                     grid: { color: 'rgba(156, 163, 175, 0.1)' }
                 },
                 y: {
-                    beginAtZero: true,
                     ticks: { color: '#9ca3af' },
-                    grid: { color: 'rgba(156, 163, 175, 0.1)' }
+                    grid: { display: false }
                 }
             }
         }
@@ -352,13 +355,13 @@ function crearGraficaTopMarcas() {
             },
             scales: {
                 x: {
+                    beginAtZero: true,
                     ticks: { color: '#9ca3af' },
                     grid: { color: 'rgba(156, 163, 175, 0.1)' }
                 },
                 y: {
-                    beginAtZero: true,
                     ticks: { color: '#9ca3af' },
-                    grid: { color: 'rgba(156, 163, 175, 0.1)' }
+                    grid: { display: false }
                 }
             }
         }
@@ -414,62 +417,7 @@ function crearGraficaVentasMes() {
         }
     });
 }
-function crearGraficaIngresosMarca() {
-function crearGraficaIngresosMarca() {
-    const ctx = document.getElementById('chartIngresosMarca');
-    if (!ctx) return;
 
-    const ingresosPorMarca = {};
-    ventasFiltradas.forEach(v => {
-        const marca = v.Marca || 'Sin Marca';
-        ingresosPorMarca[marca] = (ingresosPorMarca[marca] || 0) + v.PrecioConIVA;
-    });
-
-    const ordenado = Object.entries(ingresosPorMarca)
-        .sort((a, b) => b[1] - a[1]);
-
-    if (charts.ingresosMarca) charts.ingresosMarca.destroy();
-
-    charts.ingresosMarca = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ordenado.map(([marca]) => marca),
-            datasets: [{
-                label: 'Ingresos con IVA',
-                data: ordenado.map(([, total]) => total),
-                backgroundColor: CONFIG.COLORES.colores,
-                borderRadius: 8
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            indexAxis: 'y',
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: (context) => Utils.formatearMoneda(context.parsed.x)
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    beginAtZero: true,
-                    ticks: {
-                        color: '#9ca3af',
-                        callback: (value) => Utils.formatearMoneda(value)
-                    },
-                    grid: { color: 'rgba(156, 163, 175, 0.1)' }
-                },
-                y: {
-                    ticks: { color: '#9ca3af' },
-                    grid: { display: false }
-                }
-            }
-        }
-    });
-}
 function crearGraficaIngresosMarca() {
     const ctx = document.getElementById('chartIngresosMarca');
     if (!ctx) return;
@@ -525,6 +473,63 @@ function crearGraficaIngresosMarca() {
         }
     });
 }
+
+function crearGraficaIngresosMarcaSinIVA() {
+    const ctx = document.getElementById('chartIngresosMarcaSinIVA');
+    if (!ctx) return;
+
+    const ingresosPorMarca = {};
+    ventasFiltradas.forEach(v => {
+        const marca = v.Marca || 'Sin Marca';
+        ingresosPorMarca[marca] = (ingresosPorMarca[marca] || 0) + v.PrecioSinIVA;
+    });
+
+    const ordenado = Object.entries(ingresosPorMarca)
+        .sort((a, b) => b[1] - a[1]);
+
+    if (charts.ingresosMarcaSinIVA) charts.ingresosMarcaSinIVA.destroy();
+
+    charts.ingresosMarcaSinIVA = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ordenado.map(([marca]) => marca),
+            datasets: [{
+                label: 'Ingresos sin IVA',
+                data: ordenado.map(([, total]) => total),
+                backgroundColor: CONFIG.COLORES.colores,
+                borderRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: (context) => Utils.formatearMoneda(context.parsed.x)
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: '#9ca3af',
+                        callback: (value) => Utils.formatearMoneda(value)
+                    },
+                    grid: { color: 'rgba(156, 163, 175, 0.1)' }
+                },
+                y: {
+                    ticks: { color: '#9ca3af' },
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+}
+
 function crearGraficaParticipacionCilindraje() {
     const ctx = document.getElementById('chartParticipacionCilindraje');
     if (!ctx) return;
@@ -751,9 +756,11 @@ function mostrarTablaCompleta() {
                     <th>SKU</th>
                     <th>Marca</th>
                     <th>Modelo</th>
+                    <th>Factura</th>
                     <th>Cilindraje</th>
+                    <th>Seguro</th>
                     <th>Precio Con IVA</th>
-                    <th>Cliente</th>
+                    <th>Tienda</th>
                     <th>Fecha</th>
                 </tr>
             </thead>
@@ -767,7 +774,9 @@ function mostrarTablaCompleta() {
                 <td>${Utils.sanitizar(v.SKU)}</td>
                 <td>${Utils.sanitizar(v.Marca)}</td>
                 <td>${Utils.sanitizar(v.Modelo)}</td>
+                <td>${Utils.sanitizar(v.Factura || '-')}</td>
                 <td>${v.Cilindraje}cc</td>
+                <td>${Utils.sanitizar(v.Seguro || '-')}</td>
                 <td>${Utils.formatearMoneda(v.PrecioConIVA)}</td>
                 <td>${Utils.sanitizar(v.Cliente)}</td>
                 <td>${Utils.formatearFechaCorta(v.FechaVenta)}</td>
@@ -779,4 +788,4 @@ function mostrarTablaCompleta() {
     container.innerHTML = html;
 
     document.getElementById('btnVolverRanking')?.addEventListener('click', crearRanking);
-                        }
+            }
