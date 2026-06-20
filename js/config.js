@@ -10,7 +10,7 @@ const CONFIG = {
         'American Pistón'
     ],
     
-    CILINDRAJES: [110, 125, 150, 200, 250, 300],
+    CILINDRAJES: [125, 160, 170, 180, 190, 200, 210, 250, 300, 310, 330, 400],
     
     IVA_PORCENTAJE: 16,
     IVA_FACTOR: 1.16,
