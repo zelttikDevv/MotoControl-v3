@@ -51,7 +51,7 @@ body {
     height: 100vh;
     overflow-y: auto;
     transition: var(--transicion);
-    z-index: 100;
+    z-index: 1000;
 }
 
 .sidebar-header {
@@ -483,37 +483,6 @@ body {
     background: var(--fondo-terciario);
 }
 
-@media (max-width: 768px) {
-    .sidebar {
-        transform: translateX(-100%);
-    }
-
-    .sidebar.active {
-        transform: translateX(0);
-    }
-
-    .main-content {
-        margin-left: 0;
-        padding: 1rem;
-    }
-
-    .kpi-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .chart-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .filters-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -576,23 +545,86 @@ body {
     color: var(--color-exito);
 }
 
+/* Botón del menú móvil mejorado */
 .mobile-menu-btn {
     display: none;
     position: fixed;
     top: 1rem;
     left: 1rem;
-    z-index: 101;
+    z-index: 1001;
     background: var(--color-primario);
     border: none;
     border-radius: 8px;
-    padding: 0.75rem;
+    padding: 0.75rem 1rem;
     color: white;
     cursor: pointer;
+    font-size: 1.5rem;
+    box-shadow: var(--sombra);
+    transition: var(--transicion);
+    line-height: 1;
 }
 
+.mobile-menu-btn:hover {
+    background: #2563eb;
+    transform: scale(1.05);
+}
+
+.mobile-menu-btn:active {
+    transform: scale(0.95);
+}
+
+/* Overlay para el menú móvil */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    backdrop-filter: blur(2px);
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
     .mobile-menu-btn {
         display: block;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+        box-shadow: var(--sombra-fuerte);
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+        padding-top: 5rem;
+    }
+
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .filters-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -642,4 +674,4 @@ body {
     align-items: center;
     gap: 0.25rem;
     font-size: 0.875rem;
-  }
+        }
