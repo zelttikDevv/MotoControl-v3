@@ -1,7 +1,6 @@
 const API = {
     async obtenerVentas() {
         try {
-            // SIN HEADERS - esto evita el preflight CORS
             const response = await fetch(`${CONFIG.API_URL}?action=getVentas`);
 
             if (!response.ok) {
@@ -53,7 +52,6 @@ const API = {
                 fechaVenta: venta.fechaVenta
             };
 
-            // SIN HEADERS - esto evita el preflight CORS
             const response = await fetch(CONFIG.API_URL, {
                 method: 'POST',
                 body: JSON.stringify(dataToSend)
