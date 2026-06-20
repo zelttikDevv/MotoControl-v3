@@ -30,7 +30,7 @@
                     <span>Registrar Venta</span>
                 </a>
                 <a href="analisis.html" class="nav-item">
-                    <span class="nav-icon"></span>
+                    <span class="nav-icon">📈</span>
                     <span>Análisis Avanzado</span>
                 </a>
             </nav>
@@ -86,6 +86,7 @@
                                 </select>
                                 <span class="form-error">Seleccione un cilindraje válido</span>
                             </div>
+
                             <div class="form-group">
                                 <label for="factura" class="form-label required">Número de Factura</label>
                                 <input type="text" id="factura" name="factura" class="form-input" placeholder="Ej: FAC-12345" required minlength="3" maxlength="50">
@@ -117,12 +118,12 @@
                     </div>
 
                     <div class="form-section">
-                        <h2 class="form-section-title">Datos del Cliente</h2>
+                        <h2 class="form-section-title">Datos de la Tienda</h2>
                         <div class="form-grid">
                             <div class="form-group">
-                                <label for="cliente" class="form-label required">Nombre del Cliente</label>
-                                <input type="text" id="cliente" name="cliente" class="form-input" placeholder="Ej: Juan Pérez García" required minlength="3" maxlength="200">
-                                <span class="form-error">El nombre del cliente es obligatorio (mínimo 3 caracteres)</span>
+                                <label for="cliente" class="form-label required">Tienda</label>
+                                <input type="text" id="cliente" name="cliente" class="form-input" placeholder="Ej: Tienda 0800" required minlength="3" maxlength="200">
+                                <span class="form-error">La tienda es obligatoria (mínimo 3 caracteres)</span>
                             </div>
                         </div>
                     </div>
@@ -154,4 +155,4 @@
     <script src="js/api.js"></script>
     <script src="js/captura.js"></script>
 </body>
-                        </html>
+                                    </html>
