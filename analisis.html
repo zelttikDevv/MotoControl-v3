@@ -68,16 +68,15 @@
                     </div>
 
                     <div class="filter-group">
-                        <label for="filtroCilindraje" class="filter-label">Cilindraje</label>
-                        <select id="filtroCilindraje" class="form-select">
-                            <option value="">Todos los cilindrajes</option>
-                            <option value="110">110cc</option>
-                            <option value="125">125cc</option>
-                            <option value="150">150cc</option>
-                            <option value="200">200cc</option>
-                            <option value="250">250cc</option>
-                            <option value="300">300cc</option>
-                        </select>
+                        <label for="filtroCilindraje" class="filter-label">Cilindraje (cc)</label>
+                        <input 
+                            type="number" 
+                            id="filtroCilindraje" 
+                            class="form-input" 
+                            placeholder="Ej: 150"
+                            min="50"
+                            max="1000"
+                        >
                     </div>
 
                     <div class="filter-group" style="justify-content: flex-end;">
@@ -220,4 +219,4 @@
     <script src="js/api.js"></script>
     <script src="js/analisis.js"></script>
 </body>
-  </html>
+    </html>
