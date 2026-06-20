@@ -1,12 +1,8 @@
 const API = {
     async obtenerVentas() {
         try {
-            const response = await fetch(`${CONFIG.API_URL}?action=getVentas`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+            // SIN HEADERS - esto evita el preflight CORS
+            const response = await fetch(`${CONFIG.API_URL}?action=getVentas`);
 
             if (!response.ok) {
                 throw new Error(`Error HTTP: ${response.status}`);
@@ -55,11 +51,9 @@ const API = {
                 fechaVenta: venta.fechaVenta
             };
 
+            // SIN HEADERS - esto evita el preflight CORS
             const response = await fetch(CONFIG.API_URL, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'text/plain;charset=utf-8',
-                },
                 body: JSON.stringify(dataToSend)
             });
 
