@@ -13,8 +13,37 @@ function inicializarMenuMovil() {
     const sidebar = document.getElementById('sidebar');
     
     if (menuBtn && sidebar) {
-        menuBtn.addEventListener('click', () => {
+        let overlay = document.querySelector('.sidebar-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.className = 'sidebar-overlay';
+            document.body.appendChild(overlay);
+        }
+        
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+        
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+        
+        const navItems = sidebar.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+        });
+        
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            }
         });
     }
 }
@@ -99,14 +128,24 @@ function aplicarFiltros() {
     const fechaFin = document.getElementById('filtroFechaFin').value;
     const marca = document.getElementById('filtroMarca').value;
     const modelo = document.getElementById('filtroModelo').value.toLowerCase().trim();
-    const cilindraje = document.getElementById('filtroCilindraje').value;
+    const cilindraje = document.getElementById('filtroCilindraje').value.trim();
 
     ventasFiltradas = ventasData.filter(venta => {
         if (fechaInicio && new Date(venta.FechaVenta) < new Date(fechaInicio)) return false;
         if (fechaFin && new Date(venta.FechaVenta) > new Date(fechaFin)) return false;
         if (marca && venta.Marca !== marca) return false;
         if (modelo && !venta.Modelo.toLowerCase().includes(modelo)) return false;
-        if (cilindraje && venta.Cilindraje != cilindraje) return false;
+        
+        if (cilindraje) {
+            const cilindrajeFiltro = parseInt(cilindraje);
+            const cilindrajeVenta = parseInt(venta.Cilindraje);
+            if (!isNaN(cilindrajeFiltro) && !isNaN(cilindrajeVenta)) {
+                if (Math.abs(cilindrajeVenta - cilindrajeFiltro) > 10) {
+                    return false;
+                }
+            }
+        }
+        
         return true;
     });
 
@@ -233,9 +272,7 @@ function crearTodasLasGraficas() {
     crearGraficaIngresosMarcaSinIVA();
     crearGraficaParticipacionCilindraje();
     crearGraficaTendenciaComercial();
-}
-
-function crearGraficaTopModelos() {
+}function crearGraficaTopModelos() {
     const ctx = document.getElementById('chartTopModelos');
     if (!ctx) return;
 
@@ -584,4 +621,97 @@ function crearRanking() {
         ranking[key].ingresos += v.PrecioConIVA;
     });
 
-    const rankingArray = Object.values(
+    const rankingArray = Object.values(ranking)
+        .sort((a, b) => b.ventas - a.ventas)
+        .slice(0, 10);
+
+    if (rankingArray.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>No hay datos para mostrar</p></div>';
+        return;
+    }
+
+    let html = `
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Cilindraje</th>
+                    <th>Ventas</th>
+                    <th>Ingresos</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    rankingArray.forEach((item, index) => {
+        html += `
+            <tr>
+                <td><strong>${index + 1}</strong></td>
+                <td>${Utils.sanitizar(item.marca)}</td>
+                <td>${Utils.sanitizar(item.modelo)}</td>
+                <td>${item.cilindraje}cc</td>
+                <td><span class="badge badge-success">${item.ventas}</span></td>
+                <td>${Utils.formatearMoneda(item.ingresos)}</td>
+            </tr>
+        `;
+    });
+
+    html += '</tbody></table>';
+    container.innerHTML = html;
+}
+
+function mostrarTablaCompleta() {
+    const container = document.getElementById('rankingContainer');
+    if (!container) return;
+
+    if (ventasFiltradas.length === 0) {
+        Utils.mostrarNotificacion('No hay datos para mostrar', 'error');
+        return;
+    }
+
+    let html = `
+        <div style="margin-bottom: 1rem;">
+            <button class="btn btn-secondary" id="btnVolverRanking">← Volver al Ranking</button>
+            <span style="margin-left: 1rem; color: var(--texto-terciario);">
+                Mostrando ${ventasFiltradas.length} registros
+            </span>
+        </div>
+        <div style="overflow-x: auto;">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>SKU</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Cilindraje</th>
+                    <th>Precio Con IVA</th>
+                    <th>Cliente</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    ventasFiltradas.forEach(v => {
+        html += `
+            <tr>
+                <td>${Utils.sanitizar(v.ID || '-')}</td>
+                <td>${Utils.sanitizar(v.SKU)}</td>
+                <td>${Utils.sanitizar(v.Marca)}</td>
+                <td>${Utils.sanitizar(v.Modelo)}</td>
+                <td>${v.Cilindraje}cc</td>
+                <td>${Utils.formatearMoneda(v.PrecioConIVA)}</td>
+                <td>${Utils.sanitizar(v.Cliente)}</td>
+                <td>${Utils.formatearFechaCorta(v.FechaVenta)}</td>
+            </tr>
+        `;
+    });
+
+    html += '</tbody></table></div>';
+    container.innerHTML = html;
+
+    document.getElementById('btnVolverRanking')?.addEventListener('click', crearRanking);
+                        }
