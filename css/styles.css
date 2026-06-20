@@ -675,3 +675,91 @@ body {
     gap: 0.25rem;
     font-size: 0.875rem;
         }
+/* Correcciones específicas para Análisis Avanzado en móvil */
+@media (max-width: 768px) {
+    /* Evitar zoom en inputs al hacer focus */
+    .form-input,
+    .form-select {
+        font-size: 16px; /* Previene zoom en iOS */
+    }
+    
+    /* Ajustar filtros en móvil */
+    .filters-container {
+        padding: 1rem;
+        overflow-x: hidden;
+    }
+    
+    .filters-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    /* Ajustar gráficas en móvil */
+    .chart-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .chart-card {
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .chart-container {
+        height: 250px !important; /* Reducir altura en móvil */
+        min-height: 200px;
+    }
+    
+    /* Ajustar métricas avanzadas */
+    .kpi-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .metric-card {
+        padding: 1rem;
+    }
+    
+    .metric-value {
+        font-size: 1.5rem;
+    }
+    
+    /* Ajustar tablas */
+    .data-table {
+        font-size: 0.875rem;
+    }
+    
+    .data-table th,
+    .data-table td {
+        padding: 0.5rem;
+    }
+    
+    /* Permitir scroll horizontal en tablas */
+    #rankingContainer {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Ajustar canvas de Chart.js */
+    canvas {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+}
+
+/* Prevenir zoom en todos los dispositivos */
+input, select, textarea {
+    font-size: 16px !important;
+}
+
+/* Asegurar que los charts sean responsivos */
+.chart-container {
+    position: relative;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Forzar Chart.js a ser responsivo */
+canvas {
+    max-width: 100% !important;
+}
