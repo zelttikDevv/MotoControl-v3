@@ -299,11 +299,21 @@ function crearTodasLasGraficas() {
             }]
         },
         options: {
-            ...CONFIG.CHART_OPTIONS,
-            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
             plugins: {
-                ...CONFIG.CHART_OPTIONS.plugins,
                 legend: { display: false }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#9ca3af' },
+                    grid: { color: 'rgba(156, 163, 175, 0.1)' }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#9ca3af' },
+                    grid: { color: 'rgba(156, 163, 175, 0.1)' }
+                }
             }
         }
     });
@@ -335,10 +345,21 @@ function crearGraficaTopMarcas() {
             }]
         },
         options: {
-            ...CONFIG.CHART_OPTIONS,
+            responsive: true,
+            maintainAspectRatio: false,
             plugins: {
-                ...CONFIG.CHART_OPTIONS.plugins,
                 legend: { display: false }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#9ca3af' },
+                    grid: { color: 'rgba(156, 163, 175, 0.1)' }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#9ca3af' },
+                    grid: { color: 'rgba(156, 163, 175, 0.1)' }
+                }
             }
         }
     });
@@ -373,10 +394,26 @@ function crearGraficaVentasMes() {
                 fill: true
             }]
         },
-        options: CONFIG.CHART_OPTIONS
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#9ca3af' },
+                    grid: { color: 'rgba(156, 163, 175, 0.1)' }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#9ca3af' },
+                    grid: { color: 'rgba(156, 163, 175, 0.1)' }
+                }
+            }
+        }
     });
 }
-
 function crearGraficaIngresosMarca() {
     const ctx = document.getElementById('chartIngresosMarca');
     if (!ctx) return;
@@ -403,10 +440,9 @@ function crearGraficaIngresosMarca() {
             }]
         },
         options: {
-            ...CONFIG.CHART_OPTIONS,
-            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
             plugins: {
-                ...CONFIG.CHART_OPTIONS.plugins,
                 legend: { display: false },
                 tooltip: {
                     callbacks: {
@@ -415,13 +451,17 @@ function crearGraficaIngresosMarca() {
                 }
             },
             scales: {
-                ...CONFIG.CHART_OPTIONS.scales,
                 x: {
-                    ...CONFIG.CHART_OPTIONS.scales.x,
-                    ticks: {
-                        ...CONFIG.CHART_OPTIONS.scales.x.ticks,
+                    ticks: { 
+                        color: '#9ca3af',
                         callback: (value) => Utils.formatearMoneda(value)
-                    }
+                    },
+                    grid: { color: 'rgba(156, 163, 175, 0.1)' }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#9ca3af' },
+                    grid: { color: 'rgba(156, 163, 175, 0.1)' }
                 }
             }
         }
@@ -454,10 +494,9 @@ function crearGraficaIngresosMarcaSinIVA() {
             }]
         },
         options: {
-            ...CONFIG.CHART_OPTIONS,
-            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
             plugins: {
-                ...CONFIG.CHART_OPTIONS.plugins,
                 legend: { display: false },
                 tooltip: {
                     callbacks: {
@@ -466,13 +505,17 @@ function crearGraficaIngresosMarcaSinIVA() {
                 }
             },
             scales: {
-                ...CONFIG.CHART_OPTIONS.scales,
                 x: {
-                    ...CONFIG.CHART_OPTIONS.scales.x,
-                    ticks: {
-                        ...CONFIG.CHART_OPTIONS.scales.x.ticks,
+                    ticks: { 
+                        color: '#9ca3af',
                         callback: (value) => Utils.formatearMoneda(value)
-                    }
+                    },
+                    grid: { color: 'rgba(156, 163, 175, 0.1)' }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#9ca3af' },
+                    grid: { color: 'rgba(156, 163, 175, 0.1)' }
                 }
             }
         }
@@ -597,7 +640,26 @@ function crearGraficaTendenciaComercial() {
                 }
             ]
         },
-        options: CONFIG.CHART_OPTIONS
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: { color: '#e5e7eb' }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#9ca3af' },
+                    grid: { color: 'rgba(156, 163, 175, 0.1)' }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#9ca3af' },
+                    grid: { color: 'rgba(156, 163, 175, 0.1)' }
+                }
+            }
+        }
     });
 }
 
