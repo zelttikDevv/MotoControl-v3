@@ -14,8 +14,37 @@ function inicializarMenuMovil() {
     const sidebar = document.getElementById('sidebar');
     
     if (menuBtn && sidebar) {
-        menuBtn.addEventListener('click', () => {
+        let overlay = document.querySelector('.sidebar-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.className = 'sidebar-overlay';
+            document.body.appendChild(overlay);
+        }
+        
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        });
+        
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+        });
+        
+        const navItems = sidebar.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+        });
+        
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            }
         });
     }
 }
@@ -79,13 +108,13 @@ async function manejarEnvioFormulario(event) {
 
     const factura = document.getElementById('factura').value.trim();
     
-    // Verificar si la factura ya existe
     Utils.mostrarLoader('Verificando factura...');
     
     try {
-        const facturaExiste = await verificarFacturaDuplicada(factura);
+        const response = await fetch(`${CONFIG.API_URL}?action=checkFactura&factura=${encodeURIComponent(factura)}`);
+        const data = await response.json();
         
-        if (facturaExiste) {
+        if (data.existe) {
             Utils.ocultarLoader();
             Utils.mostrarNotificacion(`❌ La factura "${factura}" ya está registrada`, 'error');
             return;
@@ -138,17 +167,6 @@ async function manejarEnvioFormulario(event) {
         Utils.ocultarLoader();
         btnGuardar.disabled = false;
         btnGuardar.innerHTML = '💾 Guardar Venta';
-    }
-}
-
-async function verificarFacturaDuplicada(factura) {
-    try {
-        const response = await fetch(`${CONFIG.API_URL}?action=checkFactura&factura=${encodeURIComponent(factura)}`);
-        const data = await response.json();
-        return data.existe || false;
-    } catch (error) {
-        console.error('Error al verificar factura:', error);
-        return false;
     }
 }
 
