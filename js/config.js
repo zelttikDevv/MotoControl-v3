@@ -1,5 +1,5 @@
 const CONFIG = {
-    API_URL: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec',
+    API_URL: 'https://script.google.com/macros/s/AKfycbyLEPZ9wrJa5jtdyO3bE2R_Pnm7BRTqlbmQfLb8yOuEjMqdF2uox_WECAZy3pzx3b2Y/exec',
     
     MARCAS: [
         'Vento',
