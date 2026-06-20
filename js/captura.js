@@ -77,11 +77,32 @@ async function manejarEnvioFormulario(event) {
         return;
     }
 
+    const factura = document.getElementById('factura').value.trim();
+    
+    // Verificar si la factura ya existe
+    Utils.mostrarLoader('Verificando factura...');
+    
+    try {
+        const facturaExiste = await verificarFacturaDuplicada(factura);
+        
+        if (facturaExiste) {
+            Utils.ocultarLoader();
+            Utils.mostrarNotificacion(`❌ La factura "${factura}" ya está registrada`, 'error');
+            return;
+        }
+    } catch (error) {
+        Utils.ocultarLoader();
+        Utils.mostrarNotificacion('Error al verificar la factura', 'error');
+        return;
+    }
+
     const datosVenta = {
         sku: document.getElementById('sku').value,
         marca: document.getElementById('marca').value,
         modelo: document.getElementById('modelo').value,
         cilindraje: document.getElementById('cilindraje').value,
+        factura: factura,
+        seguro: document.getElementById('seguro').value,
         precioConIVA: document.getElementById('precioConIVA').value,
         cliente: document.getElementById('cliente').value,
         fechaVenta: document.getElementById('fechaVenta').value
@@ -117,6 +138,17 @@ async function manejarEnvioFormulario(event) {
         Utils.ocultarLoader();
         btnGuardar.disabled = false;
         btnGuardar.innerHTML = '💾 Guardar Venta';
+    }
+}
+
+async function verificarFacturaDuplicada(factura) {
+    try {
+        const response = await fetch(`${CONFIG.API_URL}?action=checkFactura&factura=${encodeURIComponent(factura)}`);
+        const data = await response.json();
+        return data.existe || false;
+    } catch (error) {
+        console.error('Error al verificar factura:', error);
+        return false;
     }
 }
 
