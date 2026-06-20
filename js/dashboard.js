@@ -133,6 +133,24 @@ function calcularKPIs() {
     document.getElementById('kpiCilindrajeTopVentas').textContent = `${ventasCilindrajeTop} ventas`;
 
     calcularTendencias();
+    // Métricas de seguros
+    const totalVentas = ventasData.length;
+    const segurosVendidos = ventasData.filter(v => v.Seguro && v.Seguro !== 'SIN SEGURO').length;
+    const seguroPlus = ventasData.filter(v => v.Seguro === 'Seguro Plus').length;
+    const seguroRC = ventasData.filter(v => v.Seguro === 'Seguro RC').length;
+    
+    const porcentajeSeguros = totalVentas > 0 ? ((segurosVendidos / totalVentas) * 100).toFixed(1) : 0;
+    const porcentajePlus = totalVentas > 0 ? ((seguroPlus / totalVentas) * 100).toFixed(1) : 0;
+    const porcentajeRC = totalVentas > 0 ? ((seguroRC / totalVentas) * 100).toFixed(1) : 0;
+    
+    document.getElementById('kpiSegurosVendidos').textContent = Utils.formatearNumero(segurosVendidos);
+    document.getElementById('kpiSegurosPorcentaje').textContent = `${porcentajeSeguros}%`;
+    
+    document.getElementById('kpiSeguroPlus').textContent = Utils.formatearNumero(seguroPlus);
+    document.getElementById('kpiSeguroPlusPorcentaje').textContent = `${porcentajePlus}%`;
+    
+    document.getElementById('kpiSeguroRC').textContent = Utils.formatearNumero(seguroRC);
+    document.getElementById('kpiSeguroRCPorcentaje').textContent = `${porcentajeRC}%`;
 }
 
 function calcularTendencias() {
