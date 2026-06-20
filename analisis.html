@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis Avanzado - Sistema de Ventas de Motocicletas</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+    
+    <div class="app-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <span>🏍️</span>
+                    <span>MotoVentas</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="captura.html" class="nav-item">
+                    <span class="nav-icon">➕</span>
+                    <span>Registrar Venta</span>
+                </a>
+                <a href="analisis.html" class="nav-item active">
+                    <span class="nav-icon">📈</span>
+                    <span>Análisis Avanzado</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="page-header fade-in">
+                <h1 class="page-title">Análisis Avanzado</h1>
+                <p class="page-subtitle">Análisis detallado del comportamiento comercial</p>
+            </header>
+
+            <section class="filters-container fade-in">
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label for="filtroFechaInicio" class="filter-label">Fecha Inicio</label>
+                        <input type="date" id="filtroFechaInicio" class="form-input">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filtroFechaFin" class="filter-label">Fecha Fin</label>
+                        <input type="date" id="filtroFechaFin" class="form-input">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filtroMarca" class="filter-label">Marca</label>
+                        <select id="filtroMarca" class="form-select">
+                            <option value="">Todas las marcas</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filtroModelo" class="filter-label">Modelo</label>
+                        <input type="text" id="filtroModelo" class="form-input" placeholder="Buscar modelo...">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="filtroCilindraje" class="filter-label">Cilindraje</label>
+                        <select id="filtroCilindraje" class="form-select">
+                            <option value="">Todos los cilindrajes</option>
+                            <option value="110">110cc</option>
+                            <option value="125">125cc</option>
+                            <option value="150">150cc</option>
+                            <option value="200">200cc</option>
+                            <option value="250">250cc</option>
+                            <option value="300">300cc</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group" style="justify-content: flex-end;">
+                        <button class="btn btn-primary" id="btnAplicarFiltros">🔍 Aplicar Filtros</button>
+                    </div>
+
+                    <div class="filter-group" style="justify-content: flex-end;">
+                        <button class="btn btn-secondary" id="btnLimpiarFiltros">🔄 Limpiar</button>
+                    </div>
+
+                    <div class="filter-group" style="justify-content: flex-end;">
+                        <button class="btn btn-secondary" id="btnExportar">📥 Exportar CSV</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="kpi-grid fade-in" id="metricasAvanzadas">
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-title">Ticket Promedio por Marca</span>
+                    </div>
+                    <div class="metric-value" id="metricTicketMarca">-</div>
+                    <div class="metric-change">
+                        <span id="metricTicketMarcaDetalle">Seleccione una marca</span>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-title">Crecimiento Semanal</span>
+                    </div>
+                    <div class="metric-value" id="metricCrecimiento">0%</div>
+                    <div class="metric-change">
+                        <span id="metricCrecimientoDetalle">vs semana anterior</span>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-title">Participación Acumulada</span>
+                    </div>
+                    <div class="metric-value" id="metricParticipacion">0%</div>
+                    <div class="metric-change">
+                        <span id="metricParticipacionDetalle">Top 3 marcas</span>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <span class="metric-title">Proyección Mensual</span>
+                    </div>
+                    <div class="metric-value" id="metricProyeccion">$0.00</div>
+                    <div class="metric-change">
+                        <span id="metricProyeccionDetalle">Basado en tendencia actual</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="chart-grid fade-in">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Top Modelos</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartTopModelos"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Top Marcas</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartTopMarcas"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Ventas por Mes</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartVentasMes"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Ingresos por Marca (con IVA)</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartIngresosMarca"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Ingresos por Marca (sin IVA)</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartIngresosMarcaSinIVA"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Participación por Cilindraje</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chartParticipacionCilindraje"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section class="chart-grid fade-in">
+                <div class="chart-card" style="grid-column: 1 / -1;">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Tendencia Comercial: Semana Actual vs Anterior</h3>
+                    </div>
+                    <div class="chart-container" style="height: 400px;">
+                        <canvas id="chartTendenciaComercial"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section class="chart-card fade-in" style="margin-top: 2rem;">
+                <div class="chart-header">
+                    <h3 class="chart-title">Ranking de Productos</h3>
+                    <div class="table-actions">
+                        <button class="btn btn-secondary" id="btnVerTabla">📋 Ver Tabla Completa</button>
+                    </div>
+                </div>
+                <div id="rankingContainer"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/analisis.js"></script>
+</body>
+  </html>
