@@ -11,7 +11,6 @@ function inicializarMenuMovil() {
     const sidebar = document.getElementById('sidebar');
     
     if (menuBtn && sidebar) {
-        // Crear overlay si no existe
         let overlay = document.querySelector('.sidebar-overlay');
         if (!overlay) {
             overlay = document.createElement('div');
@@ -19,20 +18,17 @@ function inicializarMenuMovil() {
             document.body.appendChild(overlay);
         }
         
-        // Toggle del menú
         menuBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             sidebar.classList.toggle('active');
             overlay.classList.toggle('active');
         });
         
-        // Cerrar al hacer clic en el overlay
         overlay.addEventListener('click', () => {
             sidebar.classList.remove('active');
             overlay.classList.remove('active');
         });
         
-        // Cerrar al hacer clic en un enlace del menú
         const navItems = sidebar.querySelectorAll('.nav-item');
         navItems.forEach(item => {
             item.addEventListener('click', () => {
@@ -41,7 +37,6 @@ function inicializarMenuMovil() {
             });
         });
         
-        // Cerrar al redimensionar la ventana
         window.addEventListener('resize', () => {
             if (window.innerWidth > 768) {
                 sidebar.classList.remove('active');
@@ -133,8 +128,7 @@ function calcularKPIs() {
     document.getElementById('kpiCilindrajeTopVentas').textContent = `${ventasCilindrajeTop} ventas`;
 
     calcularTendencias();
-    // Métricas de seguros
-    const totalVentas = ventasData.length;
+
     const segurosVendidos = ventasData.filter(v => v.Seguro && v.Seguro !== 'SIN SEGURO').length;
     const seguroPlus = ventasData.filter(v => v.Seguro === 'Seguro Plus').length;
     const seguroRC = ventasData.filter(v => v.Seguro === 'Seguro RC').length;
