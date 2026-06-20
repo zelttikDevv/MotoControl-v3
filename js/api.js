@@ -45,6 +45,8 @@ const API = {
                 marca: Utils.sanitizar(venta.marca),
                 modelo: Utils.sanitizar(venta.modelo.trim()),
                 cilindraje: parseInt(venta.cilindraje),
+                factura: Utils.sanitizar(venta.factura.trim()),
+                seguro: Utils.sanitizar(venta.seguro),
                 precioConIVA: parseFloat(venta.precioConIVA),
                 precioSinIVA: precioSinIVA,
                 cliente: Utils.sanitizar(venta.cliente.trim()),
